@@ -1,0 +1,44 @@
+>>  WIN CONDITIONS
+>rows columns and diagonals --- pre defined win indexes we have used 
+
+>> EVENT LISTENERS
+>adds a click to each cell
+>restart button to start the game
+>current player for status
+
+>>CELL CLICK HANDLER
+>index of the clicked cell 
+>prevent the cell to be clicked again 
+>updates the cell to place x and o
+>checkwinner to see who won
+
+>>Updating a Cell
+
+>>swwitching the player
+
+>>CHECKING THE WINNER
+function checkWinner() {
+  let roundWon = false; //assumes no winner yet
+  let winningCells = [];//will store three indices if someone wins
+
+  for (let condition of winConditions) {
+    const [a, b, c] = condition; //[0,1,2]
+    if (options[a] && options[a] === options[b] && options[a] === options[c]) {//destuction to three parts
+      roundWon = true;
+      winningCells = condition;
+      break;
+    }
+  }
+
+  if (roundWon) {
+    statusText.textContent = `${currentPlayer} wins!`;
+    running = false;
+    drawWinLine(winningCells);
+  } else if (!options.includes("")) {
+    statusText.textContent = "It's a Draw!";
+    running = false;
+  } else {
+    changePlayer();
+  }
+}
+

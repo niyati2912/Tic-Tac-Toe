@@ -77,54 +77,33 @@ changePlayer();
 const winLine = document.querySelector("#winLine");
 
 function drawWinLine(cells) {
-winLine.style.width = "0";
-const [a, b, c] = cells;
+winLine.style.width = "0"; // reset
 
-if (a === 0 && b === 1 && c === 2) {
-winLine.style.top = "30px";
-winLine.style.left = "10px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(0deg)";
-} else if (a === 3 && b === 4 && c === 5) {
-winLine.style.top = "110px";
-winLine.style.left = "10px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(0deg)";
-} else if (a === 6 && b === 7 && c === 8) {
-winLine.style.top = "190px";
-winLine.style.left = "10px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(0deg)";
-}
+const [a, , c] = cells;
+const cellElements = document.querySelectorAll(".cell");
+const container = document.querySelector("#gameContainer").getBoundingClientRect();
 
-else if (a === 0 && b === 3 && c === 6) {
-winLine.style.top = "10px";
-winLine.style.left = "40px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(90deg)";
-} else if (a === 1 && b === 4 && c === 7) {
-winLine.style.top = "10px";
-winLine.style.left = "120px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(90deg)";
-} else if (a === 2 && b === 5 && c === 8) {
-winLine.style.top = "10px";
-winLine.style.left = "200px";
-winLine.style.width = "240px";
-winLine.style.transform = "rotate(90deg)";
-}
+// get center of first and last winning cells
+const startCell = cellElements[a].getBoundingClientRect();
+const endCell = cellElements[c].getBoundingClientRect();
 
-else if (a === 0 && b === 4 && c === 8) {
-winLine.style.top = "10px";
-winLine.style.left = "10px";
-winLine.style.width = "340px";
-winLine.style.transform = "rotate(45deg)";
-} else if (a === 2 && b === 4 && c === 6) {
-winLine.style.top = "10px";
-winLine.style.left = "10px";
-winLine.style.width = "340px";
-winLine.style.transform = "rotate(-45deg)";
-}
+const startX = startCell.left + startCell.width / 2 - container.left;
+const startY = startCell.top + startCell.height / 2 - container.top;
+const endX = endCell.left + endCell.width / 2 - container.left;
+const endY = endCell.top + endCell.height / 2 - container.top;
+
+// calculate distance and angle
+const dx = endX - startX;
+const dy = endY - startY;
+const length = Math.sqrt(dx * dx + dy * dy);
+const angle = Math.atan2(dy, dx) * (180 / Math.PI);
+
+// apply styles
+winLine.style.top = `${startY}px`;
+winLine.style.left = `${startX}px`;
+winLine.style.width = `${length}px`;
+winLine.style.transformOrigin = "0 50%"; // pivot at left middle
+winLine.style.transform = `rotate(${angle}deg)`;
 }
 
 function restartGame() {
