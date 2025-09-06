@@ -30,7 +30,7 @@ function cellClicked() {
 const cellIndex = this.getAttribute("cellIndex");
 
 if (options[cellIndex] !== "" || !running) {
-    return;
+return;
 }
 
 updateCell(this, cellIndex);
@@ -49,23 +49,81 @@ statusText.textContent = `${currentPlayer}'s turn`;
 
 function checkWinner() {
 let roundWon = false;
+let winningCells = [];
 
+//vertical
 for (let condition of winConditions) {
-    const [a, b, c] = condition;
-    if (options[a] && options[a] === options[b] && options[a] === options[c]) {
-        roundWon = true;
-        break;
-    }
+const [a, b, c] = condition;
+if (options[a] && options[a] === options[b] && options[a] === options[c]) {
+    roundWon = true;
+    winningCells = condition;
+    break;
+}
 }
 
 if (roundWon) {
-    statusText.textContent = `${currentPlayer} wins!`;
-    running = false;
+statusText.textContent = `${currentPlayer} wins!`;
+running = false;
+drawWinLine(winningCells);
 } else if (!options.includes("")) {
-    statusText.textContent = "It's a Draw!";
-    running = false;
+statusText.textContent = "It's a Draw!";
+running = false;
 } else {
-    changePlayer();
+changePlayer();
+}
+}
+
+//TO STRIKE THRU THE WINNING LINES
+const winLine = document.querySelector("#winLine");
+
+function drawWinLine(cells) {
+winLine.style.width = "0";
+const [a, b, c] = cells;
+
+if (a === 0 && b === 1 && c === 2) {
+winLine.style.top = "30px";
+winLine.style.left = "10px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(0deg)";
+} else if (a === 3 && b === 4 && c === 5) {
+winLine.style.top = "110px";
+winLine.style.left = "10px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(0deg)";
+} else if (a === 6 && b === 7 && c === 8) {
+winLine.style.top = "190px";
+winLine.style.left = "10px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(0deg)";
+}
+
+else if (a === 0 && b === 3 && c === 6) {
+winLine.style.top = "10px";
+winLine.style.left = "40px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(90deg)";
+} else if (a === 1 && b === 4 && c === 7) {
+winLine.style.top = "10px";
+winLine.style.left = "120px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(90deg)";
+} else if (a === 2 && b === 5 && c === 8) {
+winLine.style.top = "10px";
+winLine.style.left = "200px";
+winLine.style.width = "240px";
+winLine.style.transform = "rotate(90deg)";
+}
+
+else if (a === 0 && b === 4 && c === 8) {
+winLine.style.top = "10px";
+winLine.style.left = "10px";
+winLine.style.width = "340px";
+winLine.style.transform = "rotate(45deg)";
+} else if (a === 2 && b === 4 && c === 6) {
+winLine.style.top = "10px";
+winLine.style.left = "10px";
+winLine.style.width = "340px";
+winLine.style.transform = "rotate(-45deg)";
 }
 }
 
@@ -74,6 +132,6 @@ currentPlayer = "X";
 options = ["", "", "", "", "", "", "", "", ""];
 statusText.textContent = `${currentPlayer}'s turn`;
 cells.forEach(cell => cell.textContent = "");
+winLine.style.width = "0"; // hide line
 running = true;
 }
-
