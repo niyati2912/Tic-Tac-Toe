@@ -93,6 +93,7 @@ const endX = endCell.left + endCell.width / 2 - container.left;
 const endY = endCell.top + endCell.height / 2 - container.top;
 
 // calculate distance and angle
+
 const dx = endX - startX;
 const dy = endY - startY;
 const length = Math.sqrt(dx * dx + dy * dy);
